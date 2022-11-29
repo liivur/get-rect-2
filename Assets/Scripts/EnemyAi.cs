@@ -59,4 +59,10 @@ public class EnemyAi : MonoBehaviour
             playerDirection = null;
         }
     }
+
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        print("enemy");
+        print(col);
+    }
 }
