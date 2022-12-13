@@ -10,6 +10,8 @@ public class TileMapVisualizer : MonoBehaviour
     private Tilemap floorTilemap;
     [SerializeField]
     private TileBase floorTile, innerCornerLeft, innerCornerRight, outerCornerLeft, outerCornerRight, middleDirt;
+    [SerializeField]
+    private TileBase rulesTile;
 
     private Dictionary<String, TileBase> GetTileDefinitionMap()
     {
@@ -29,8 +31,9 @@ public class TileMapVisualizer : MonoBehaviour
         PaintTiles(floorPositions, floorTilemap, floorTile);
     }
 
-    private TileBase GetTile(HashSet<Vector2Int> positions, Vector2Int position)
+    private TileBase GetTile(HashSet<Vector2Int> positions, Vector2Int position, Dictionary<String, TileBase> tileDefinitionMap)
     {
+        return rulesTile;
         string neighbourString = "";
         foreach (var direction in Direction2D.eightDirectionsList)
         {
@@ -43,7 +46,6 @@ public class TileMapVisualizer : MonoBehaviour
             }
         }
 
-        Dictionary<String, TileBase> tileDefinitionMap = GetTileDefinitionMap();
         //Debug.Log(neighbourString);
         if (!tileDefinitionMap.ContainsKey(neighbourString))
         {
@@ -57,10 +59,11 @@ public class TileMapVisualizer : MonoBehaviour
 
     private void PaintTiles(IEnumerable<Vector2Int> positions, Tilemap tilemap, TileBase tile)
     {
+        Dictionary<String, TileBase> tileDefinitionMap = GetTileDefinitionMap();
         HashSet<Vector2Int> positionSet = (HashSet<Vector2Int>) positions;
         foreach (var position in positions)
         {
-            PaintSingleTile(tilemap, GetTile(positionSet, position), position);
+            PaintSingleTile(tilemap, GetTile(positionSet, position, tileDefinitionMap), position);
         }
     }
 
@@ -70,6 +73,7 @@ public class TileMapVisualizer : MonoBehaviour
         var tilePosition = tilemap.WorldToCell((Vector3Int) position);
         //Debug.Log(tilePosition);
         tilemap.SetTile(tilePosition, tile);
+
         //tilemap.SetTile((Vector3Int) position, tile);
     }
 

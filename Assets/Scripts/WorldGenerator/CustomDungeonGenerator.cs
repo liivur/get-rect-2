@@ -14,14 +14,14 @@ public class CustomDungeonGenerator : MonoBehaviour
     private int renderThreshold = 100;
     private int renderHeight = 30;
     private int renderWidth = 50;
-    private int minRoomHeight = 5;
-    private int minRoomWidth = 7;
-    private int offset = 3;
+    private int minRoomHeight = 6;
+    private int minRoomWidth = 13;
+    private int offset = 4;
 
     private int renderedLeft = 0;
     private int renderedRight = 0;
 
-    private int mapLowest = -2;
+    private int mapLowest = -4;
 
     IEnumerator ClearOutsideCoroutine(HashSet<Vector2Int> positions, int left, int right)
     {
@@ -58,6 +58,7 @@ public class CustomDungeonGenerator : MonoBehaviour
         FillDirt(floorPositions, start - renderWidth, start);
         //ConnectRoomsRight(allfloorPositions, floorPositions, start);
 
+        floorPositions.UnionWith(GetColumn(allfloorPositions, start + 1));
         tilemapVisualizer.PaintFloorTiles(floorPositions);
         allfloorPositions.UnionWith(floorPositions);
 
@@ -82,10 +83,25 @@ public class CustomDungeonGenerator : MonoBehaviour
         FillDirt(floorPositions, start, start + renderWidth);
         //ConnectRoomsRight(allfloorPositions, floorPositions, start);
 
+        floorPositions.UnionWith(GetColumn(allfloorPositions, start - 1));
         tilemapVisualizer.PaintFloorTiles(floorPositions);
         allfloorPositions.UnionWith(floorPositions);
 
         yield return null;
+    }
+
+    protected HashSet<Vector2Int> GetColumn(HashSet<Vector2Int> positions, int column)
+    {
+        HashSet<Vector2Int> columnPositions = new HashSet<Vector2Int>();
+        foreach (var position in positions)
+        {
+            if (position.x == column)
+            {
+                columnPositions.Add(position);
+            }
+        }
+
+        return columnPositions;
     }
 
     // Start is called before the first frame update

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Damage : MonoBehaviour
 {
     public float damage = 1;
-    [SerializeField] private LayerMask target;                          // A mask determining what is character
+    public LayerMask target;                          // A mask determining what is character
 
     //void Awake()
     //{
@@ -25,5 +25,10 @@ public class Damage : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public bool MatchesDamageLayer(int layer)
+    {
+        return target == (target | (1 << layer));
     }
 }

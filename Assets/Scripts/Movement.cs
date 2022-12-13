@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
 
     float horizontalMove = 0f;
     bool attack = false;
+    bool rangedAttack = false;
     bool jump = false;
     Animator animator;
 
@@ -29,6 +30,11 @@ public class Movement : MonoBehaviour
             
             attack = false;
         }
+
+        if (rangedAttack)
+        {
+            rangedAttack = false;
+        }
     }
 
     // Update is called once per frame
@@ -45,6 +51,13 @@ public class Movement : MonoBehaviour
         {
             animator.SetTrigger("Attack");
             attack = true;
+        }
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            animator.SetTrigger("RangedAttack");
+            controller.RangedAttack(true);
+            rangedAttack = true;
         }
     }
 }

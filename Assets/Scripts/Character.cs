@@ -37,7 +37,12 @@ public class Character : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         Damage damage = col.GetComponent<Damage>();
-        TakeDamage(damage.damage);
+        
+        //if (damage && damage.target == (damage.target | (1 << gameObject.layer)))
+        if (damage && damage.MatchesDamageLayer(gameObject.layer))
+        {
+            TakeDamage(damage.damage);
+        }
     }
 
     void SetColor(Color c)
