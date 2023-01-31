@@ -11,7 +11,10 @@ public class TargetObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!target)
+        {
+            target = FindObjectOfType<Character>().gameObject;
+        }
     }
 
     // Update is called once per frame

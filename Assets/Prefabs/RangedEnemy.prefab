@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &244989929
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 244989930}
+  m_Layer: 8
+  m_Name: Cannon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &244989930
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244989929}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.427, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8255250569723581991}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &864327783871691721
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +257,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4618772379459850611}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.987, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -415,6 +446,7 @@ GameObject:
   - component: {fileID: 3588918046836830177}
   - component: {fileID: 3015562691176637937}
   - component: {fileID: 2243419638176633828}
+  - component: {fileID: 726006160}
   m_Layer: 8
   m_Name: RangedEnemy
   m_TagString: Untagged
@@ -452,7 +484,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -509,6 +541,8 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 263147297921866129}
   m_CeilingCheck: {fileID: 3791428422866647811}
   m_CrouchDisableCollider: {fileID: 0}
+  projectilePrefab: {fileID: 5949870811288704034, guid: e5b9a3afb711d3646af8e824c6b12bb8, type: 3}
+  launchOffset: {fileID: 244989930}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -528,12 +562,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 3015562691176637937}
-  visionRadius: 10
-  attackRadius: 7
+  visionRadius: 30
+  attackRadius: 30
   runSpeed: 0
+  currentHealth: 30
+  maxHealth: 30
+  hasRangedAttack: 1
+  scoreValue: 100
+  damageForce: 50
   m_WhatIsCharacter:
     serializedVersion: 2
     m_Bits: 64
+--- !u!95 &726006160
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6178897295293304233}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d2a7969c76060c840afd5fbc59204ead, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7652341298757123782
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +701,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7722935713487530648}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.828, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -658,6 +717,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8255250569723581991}
+  - component: {fileID: 1912235745}
   m_Layer: 8
   m_Name: CannonPivot
   m_TagString: Untagged
@@ -679,6 +739,22 @@ Transform:
   m_Children:
   - {fileID: 5305041595812145667}
   - {fileID: 3199547100448084843}
+  - {fileID: 244989930}
   m_Father: {fileID: 8064328363503741313}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1912235745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7883904036501242197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87f9005ff20937e4aadf24e8e07b8842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  controller: {fileID: 3015562691176637937}
+  checkFacing: 1

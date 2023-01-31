@@ -7,6 +7,7 @@ public class Character : MonoBehaviour
     public float currentHealth = 100;
     public float maxHealth = 100;
     public float invincibilityCooldown = 1;
+    public float damageForce = 100;
 
     bool isInvincible = false;
     IEnumerator StartInvincibilityCooldown()
@@ -28,10 +29,10 @@ public class Character : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+        //if (Input.GetKeyUp(KeyCode.Escape))
+        //{
+        //    Application.Quit();
+        //}
     }
 
     void OnTriggerEnter2D(Collider2D col)
@@ -41,7 +42,7 @@ public class Character : MonoBehaviour
         //if (damage && damage.target == (damage.target | (1 << gameObject.layer)))
         if (damage && damage.MatchesDamageLayer(gameObject.layer))
         {
-            TakeDamage(damage.damage);
+            TakeDamage(damage.damage, col.transform.position);
         }
     }
 
@@ -53,13 +54,20 @@ public class Character : MonoBehaviour
         }
     }
 
-    void TakeDamage(float damage)
+    void TakeDamage(float damage, Vector3 from)
     {
         if (isInvincible)
         {
             return;
         }
         currentHealth -= damage;
+
+        if (currentHealth < 1)
+        {
+            Menu.instance.SetEnterNamePanel();
+            return;
+        }
+        gameObject.GetComponent<CharacterController2D>().Push(from, damageForce);
 
         StartCoroutine(StartInvincibilityCooldown());
     }

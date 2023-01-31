@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7ab6aabfafe3874398a86e7c0d576ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 10
   target:
     serializedVersion: 2
     m_Bits: 64
@@ -366,6 +366,8 @@ MonoBehaviour:
   m_GroundCheck: {fileID: 2802530245843739912}
   m_CeilingCheck: {fileID: 2802530244859471958}
   m_CrouchDisableCollider: {fileID: 0}
+  projectilePrefab: {fileID: 0}
+  launchOffset: {fileID: 0}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -428,8 +430,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 2802530245551210265}
   visionRadius: 100
-  attackRadius: 4
-  runSpeed: 8
+  attackRadius: 6
+  runSpeed: 20
+  currentHealth: 60
+  maxHealth: 60
+  hasRangedAttack: 0
+  scoreValue: 100
+  damageForce: 50
   m_WhatIsCharacter:
     serializedVersion: 2
     m_Bits: 64

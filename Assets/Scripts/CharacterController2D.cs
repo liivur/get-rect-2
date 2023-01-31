@@ -62,9 +62,19 @@ public class CharacterController2D : MonoBehaviour
 					OnLandEvent.Invoke();
 			}
 		}
+
+		if (transform.position.y < -1000)
+        {
+			Destroy(gameObject);
+        }
 	}
 
-    public void Move(float move, bool crouch, bool jump)
+	public bool IsGrounded()
+    {
+		return m_Grounded;
+    }
+
+    public void Move(float move, bool crouch, bool jump, Animator? animator = null)
 	{
 		// If crouching, check to see if the character can stand up
 		if (!crouch)
@@ -133,6 +143,10 @@ public class CharacterController2D : MonoBehaviour
 			// Add a vertical force to the player.
 			m_Grounded = false;
 			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+			if (animator)
+            {
+				animator.SetTrigger("Jump");
+            }
 		}
 	}
 
@@ -181,5 +195,10 @@ public class CharacterController2D : MonoBehaviour
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+	public void Push(Vector3 from, float force)
+    {
+		m_Rigidbody2D.AddForce((transform.position - from).normalized * force, ForceMode2D.Impulse);
 	}
 }

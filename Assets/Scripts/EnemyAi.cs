@@ -11,6 +11,8 @@ public class EnemyAi : MonoBehaviour
     public float currentHealth = 10;
     public float maxHealth = 10;
     public bool hasRangedAttack = false;
+    public float scoreValue = 100;
+    public float damageForce = 200;
 
     private int? playerDirection = null;
     private bool canAttack = true;
@@ -70,7 +72,11 @@ public class EnemyAi : MonoBehaviour
             }
             if (canAttack && Mathf.Abs(transform.position.x - playerPosition.position.x) < attackRadius)
             {
-                animator.SetTrigger("Attack");
+                if (animator)
+                {
+                    animator.SetTrigger("Attack");
+                }
+                
                 if (hasRangedAttack)
                 {
                     StartCoroutine(StartRangedAttackCooldown(1));
@@ -84,21 +90,23 @@ public class EnemyAi : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        Debug.Log("damage");
-        Debug.Log(col.gameObject.name);
         Damage damage = col.GetComponent<Damage>();
         //if (damage && gameObject.layer == damage.target)
         if (damage && damage.MatchesDamageLayer(gameObject.layer))
         {
-            TakeDamage(damage.damage);
+            TakeDamage(damage.damage, col.transform.position);
         }
     }
 
-    void TakeDamage(float damage)
+    void TakeDamage(float damage, Vector3 from)
     {
         currentHealth -= damage;
+        controller.Push(from, damageForce);
         if (currentHealth < 1)
         {
+            ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
+            scoreManager.IncreaseScore(scoreValue);
+
             Destroy(gameObject);
         }
     }
